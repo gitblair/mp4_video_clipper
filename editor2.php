@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Video Editor</title>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <style>
         .video-container {
             position: relative;
@@ -19,7 +19,10 @@
     <h1 class="mt-5">Video Editor</h1>
     <div class="row">
         <div class="col-md-12">
-            <input type="file" id="videoUpload" class="form-control" accept="video/*">
+            <form id="uploadForm" enctype="multipart/form-data">
+                <input type="file" name="video" id="videoUpload" class="form-control" accept="video/*">
+                <button type="submit" class="btn btn-primary mt-2">Upload Video</button>
+            </form>
             <div class="video-container mt-3">
                 <video id="videoPlayer" width="100%" controls></video>
                 <div class="controls mt-2">
@@ -37,10 +40,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/wavesurfer.js/3.3.3/wavesurfer.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/wavesurfer.js/3.3.3/plugin/wavesurfer.timeline.min.js"></script>
-
-
-    <!-- // Add JavaScript for handling video upload, in/out points, timeline, and zoom -->
-    <script src="editing.js"></script>
-
+<script src="editing.js"></script>
 </body>
 </html>

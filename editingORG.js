@@ -2,27 +2,11 @@ $(document).ready(function () {
     let video = document.getElementById('videoPlayer');
     let inPoint = 0;
     let outPoint = 0;
-    let uploadedFileName = '';
 
-    $('#uploadForm').on('submit', function (event) {
-        event.preventDefault();
-        let formData = new FormData(this);
-
-        $.ajax({
-            url: 'upload.php',
-            type: 'POST',
-            data: formData,
-            contentType: false,
-            processData: false,
-            success: function (response) {
-                uploadedFileName = response;
-                let url = 'uploads/' + uploadedFileName;
-                video.src = url;
-            },
-            error: function () {
-                alert('File upload failed!');
-            }
-        });
+    $('#videoUpload').on('change', function (event) {
+        let file = event.target.files[0];
+        let url = URL.createObjectURL(file);
+        video.src = url;
     });
 
     $('#setInPoint').on('click', function () {
@@ -40,7 +24,8 @@ $(document).ready(function () {
             alert('Invalid in/out points');
             return;
         }
-        downloadClip(uploadedFileName, inPoint, outPoint);
+        let filename = $('#videoUpload')[0].files[0].name;
+        downloadClip(filename, inPoint, outPoint);
     });
 
     function downloadClip(filename, start, end) {
