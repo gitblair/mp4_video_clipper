@@ -1,17 +1,14 @@
 <?php
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_FILES['video'])) {
-        $file = $_FILES['video'];
-        $uploadDir = 'uploads/';
-        $uploadFile = $uploadDir . basename($file['name']);
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file'])) {
+    $file = $_FILES['file'];
+    $uploadDirectory = 'uploads/';
+    $uploadFilePath = $uploadDirectory . basename($file['name']);
 
-        if (move_uploaded_file($file['tmp_name'], $uploadFile)) {
-            echo basename($file['name']);
-        } else {
-            echo 'Error uploading file';
-        }
+    if (move_uploaded_file($file['tmp_name'], $uploadFilePath)) {
+        echo basename($file['name']);
     } else {
-        echo 'No file uploaded';
+        http_response_code(500);
+        echo 'Error uploading file';
     }
 }
 ?>
