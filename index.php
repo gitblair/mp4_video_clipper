@@ -17,6 +17,12 @@
             align-items: center;
             gap: 10px;
         }
+        @media (min-width: 1200px) {
+    .container{
+        max-width: 970px;
+    }
+}
+
     </style>
 </head>
 <body>
