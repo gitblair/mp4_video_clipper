@@ -1,11 +1,35 @@
 $(document).ready(function () {
+    // Initialization
+    let wavesurfer = WaveSurfer.create({
+        container: '#waveform',
+        waveColor: 'violet',
+        progressColor: 'purple',
+        height: 128,
+        responsive: true,
+        plugins: [
+            WaveSurfer.regions.create({})
+        ]
+    });
+
     let video = document.getElementById('videoPlayer');
     let inPoint = 0;
     let outPoint = 0;
     let uploadedFileName = '';
 
+    if (!allowUploads) {
+        uploadedFileName = defaultVideoUrl; // Set to default video URL
+        video.src = defaultVideoUrl;
+        video.load();
+        wavesurfer.load(defaultVideoUrl);
+    }
+
     $('#uploadForm').on('submit', function (event) {
         event.preventDefault();
+        if (!allowUploads) {
+            alert('Uploads are currently disabled.');
+            return;
+        }
+
         let formData = new FormData(this);
 
         $.ajax({
@@ -36,46 +60,55 @@ $(document).ready(function () {
     });
 
     function downloadClip(filename, start, end) {
-        $.post('download.php', {
-            filename: filename,
-            start: start,
-            end: end
-        }, function (data) {
-            let a = document.createElement('a');
-            a.href = data;
-            a.download = 'clip.mp4';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
+        const form = $('<form>', {
+            method: 'POST',
+            action: 'download.php'
         });
+
+        form.append($('<input>', {
+            type: 'hidden',
+            name: 'filename',
+            value: filename
+        }));
+
+        form.append($('<input>', {
+            type: 'hidden',
+            name: 'start',
+            value: start
+        }));
+
+        form.append($('<input>', {
+            type: 'hidden',
+            name: 'end',
+            value: end
+        }));
+
+        $('body').append(form);
+        form.submit();
     }
 
-    let wavesurfer = WaveSurfer.create({
-        container: '#waveform',
-        waveColor: 'violet',
-        progressColor: 'purple',
-        height: 128,
-        responsive: true,
-        plugins: [
-            WaveSurfer.regions.create({})
-        ]
-    });
-
-    function createOrUpdateRegion(id, color, start, end) {
-        let region = wavesurfer.regions.list[id];
-        if (region) {
-            region.update({ start: start, end: end });
-        } else {
-            wavesurfer.addRegion({
-                id: id,
-                start: start,
-                end: end,
-                color: color,
-                drag: true,
-                resize: true
-            });
+    function setPoint(type, point) {
+        let timeStr = formatTime(point);
+        if (type === 'in') {
+            $('#inPointInput').val(timeStr);
+            inPoint = point;
+            createOrUpdateRegion('inRegion', 'rgba(0, 255, 0, 0.1)', inPoint, inPoint + 0.1);
+        } else if (type === 'out') {
+            $('#outPointInput').val(timeStr);
+            outPoint = point;
+            createOrUpdateRegion('outRegion', 'rgba(255, 0, 0, 0.1)', outPoint - 0.1, outPoint);
         }
     }
+
+    $('#setInPoint').click(function () {
+        let currentTime = video.currentTime;
+        setPoint('in', currentTime);
+    });
+
+    $('#setOutPoint').click(function () {
+        let currentTime = video.currentTime;
+        setPoint('out', currentTime);
+    });
 
     $(document).on('keydown', function (e) {
         if (e.key === ' ') {
@@ -86,13 +119,9 @@ $(document).ready(function () {
                 video.pause();
             }
         } else if (e.key === 'i') {
-            inPoint = video.currentTime;
-            updateFormInput('inPointInput', inPoint);
-            createOrUpdateRegion('inRegion', 'rgba(0, 255, 0, 0.1)', inPoint, inPoint + 0.1);
+            setPoint('in', video.currentTime);
         } else if (e.key === 'o') {
-            outPoint = video.currentTime;
-            updateFormInput('outPointInput', outPoint);
-            createOrUpdateRegion('outRegion', 'rgba(255, 0, 0, 0.1)', outPoint - 0.1, outPoint);
+            setPoint('out', video.currentTime);
         }
     });
 
@@ -107,8 +136,7 @@ $(document).ready(function () {
     });
 
     function updateFormInput(id, time) {
-        let timeStr = formatTime(time);
-        $('#' + id).val(timeStr);
+        $('#' + id).val(formatTime(time));
     }
 
     function parseTime(timeStr) {
@@ -131,13 +159,27 @@ $(document).ready(function () {
         return s.substr(s.length - size);
     }
 
-    // Sync video and Wavesurfer when scrubbing
+    function createOrUpdateRegion(id, color, start, end) {
+        let region = wavesurfer.regions.list[id];
+        if (region) {
+            region.update({ start: start, end: end });
+        } else {
+            wavesurfer.addRegion({
+                id: id,
+                start: start,
+                end: end,
+                color: color,
+                drag: true,
+                resize: true
+            });
+        }
+    }
+
     wavesurfer.on('seek', function (progress) {
         let newTime = progress * video.duration;
         video.currentTime = newTime;
     });
 
-    // Update region positions based on video time
     video.ontimeupdate = function () {
         if (wavesurfer.regions.list['inRegion']) {
             wavesurfer.regions.list['inRegion'].update({ start: inPoint, end: inPoint + 0.1 });
