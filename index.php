@@ -8,8 +8,6 @@
     <!-- Bootstrap Style -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-
-
     <!-- Font Awesome CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 
@@ -25,12 +23,12 @@
       <div class="row">
         <div class="col-12">
 
-<!-- Application -->
-<?php include 'config.php'; ?>
-<h1 class="my-4">MP4 Video Clipper</h1>
+          <?php include 'config.php'; ?>
+          <h1 class="my-4">MP4 Video Clipper</h1>
+          
   <form id="uploadForm" class="mb-4">
       <div class="mb-3">
-          <label for="fileInput" class="form-label">Upload Video</label>
+          <!-- <label for="fileInput" class="form-label">Upload Video</label> -->
           <input type="file" id="fileInput" name="file" class="form-control" accept="video/*" required <?php echo !$allow_uploads ? 'disabled' : ''; ?>>
       </div>
 
@@ -49,16 +47,13 @@ var defaultVideoUrl = <?php echo json_encode($default_video_url); ?>;
 
 <video id="videoPlayer" width="100%" controls></video>
 
-<div class="mb-3 d-flex flex-column align-items-center">
-<div class="center-text mt-3 text-center">Use <kbd>spacebar</kbd> to start and stop video or the video play button.</div>
-<div class="center-text mt-3 mb-3 text-center">Tap the waveform or set the in & out by hand for precision.</div>
-<div class="center-text mt-3 mb-3 text-center">Use <kbd>i</kbd> and <kbd>o</kbd> keyboard shortcuts or the buttons for in & out points.</div>
-<div class="center-buttons my-2">
+
+<div class="center-buttons mt-5 mb-5 my-2">
       <button id="setInPoint" class="btn btn-primary mx-2">Set IN</button>
       <button id="setOutPoint" class="btn btn-primary mx-2">Set OUT</button>
 </div>
-<div class="form-inline d-flex flex-column align-items-center">
-    <!-- Granular In & Out Controls -->
+<!-- <div class="form-inline d-flex flex-column align-items-center">
+
     <label class="mt-3 mb-3 fw-bold text-center">Granular In & Out</label>
       <div class="d-flex mb-3 center-inputs align-items-center">
           <label for="inPointInput" class="me-2 fw-bold me-1">In Point:</label>
@@ -66,18 +61,44 @@ var defaultVideoUrl = <?php echo json_encode($default_video_url); ?>;
           <label for="outPointInput" class="me-2 fw-bold me-1">Out Point:</label>
             <input type="text" id="outPointInput" class="form-control mx-2" value="00:00:00.000">
       </div>
-</div>
+</div> -->
 </div>
 
-  <div id="waveform"></div>
-  <button id="downloadClip" class="btn btn-success mt-3 mb-5 mx-auto d-block">Clip & Download</button>
 
-  <div class="mt-5 mb-5 text-dark text-center">Video attribution: Pond5 Public Domain Set Free Remix.</div>
+
+  <div class="col-12">
+    <div id="waveform"></div>
+    <br>
+      <button id="downloadClip" class="btn btn-success mt-3 mb-5 mx-auto d-block">Clip & Download</button>
+  </div>
+
+
 
 
     </div> <!-- end col-12 -->
   </div> <!-- end row -->
 </div> <!-- end container -->
+
+<div class="row mb-5">
+  <div class="col-12 mb-5">
+    <nav class="text-center">
+      <ul class="nav justify-content-center">
+        <li class="nav-item">
+          <a class="nav-link" href="instructions.html">instructions</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="stats.php?videopath=<?php echo $videopath; ?>">stats</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="phpinfo.php">phpinfo</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="attrib.html">attribution</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>
 
     <!-- Bootstrap Bundle JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
