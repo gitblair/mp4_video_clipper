@@ -25,7 +25,7 @@
 
           <?php include 'config.php'; ?>
           <h1 class="my-4">MP4 Video Clipper</h1>
-          
+
   <form id="uploadForm" class="mb-4">
       <div class="mb-3">
           <!-- <label for="fileInput" class="form-label">Upload Video</label> -->
@@ -94,6 +94,9 @@ var defaultVideoUrl = <?php echo json_encode($default_video_url); ?>;
         </li>
         <li class="nav-item">
           <a class="nav-link" href="attrib.html">attribution</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="javascript:history.back()">return</a>
         </li>
       </ul>
     </nav>
