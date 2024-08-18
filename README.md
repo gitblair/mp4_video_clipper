@@ -1,8 +1,14 @@
-Bare Bones Video Uploader and Clipper
-<BR>
-<BR>
-Includes wavesurfer waveform draggable in and out, play (space), in (i), and out (o) keyboard shortcuts.
-<BR>
-Also includes in and out editable display for extreme accuracy.
-
-<img width="992" alt="image" src="https://github.com/user-attachments/assets/17c2bc94-9879-418a-aad3-1d6f20d501d5">
+Adjust FFMPEG path and aloow upload settings in config.php
+<br />  
+Options for playing & stopping
+<ul>
+<li><kbd>spacebar</kbd></li>
+<li>tap the waveform</li>
+</ul>
+<br />
+Options for setting in points and out points
+<ul>
+<li>Use <kbd>i</kbd> and <kbd>o</kbd> or buttons</li>
+<li>Use in and out buttons</li>
+<li>Drag a region</li>
+</ul>
