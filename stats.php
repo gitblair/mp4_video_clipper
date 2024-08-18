@@ -1,15 +1,15 @@
 <?php
-if (isset($_GET["audiopath"])) {
-  $audiopath = $_GET["audiopath"];
+if (isset($_GET["videopath"])) {
+  $videopath = $_GET["videopath"];
 } else {
-  $audiopath = "jazz.mp3"; // Ensure this file is accessible
+  $videopath = "video.mp4"; // Ensure this file is accessible
 }
 
 echo "<p>File: </p>";
-echo "<ul><li>" . htmlspecialchars($audiopath) . "</li></ul>";
+echo "<ul><li>" . htmlspecialchars($videopath) . "</li></ul>";
 
-if (file_exists($audiopath)) {
-  $filesize = filesize($audiopath);
+if (file_exists($videopath)) {
+  $filesize = filesize($videopath);
   echo "<p>File size: </p>";
   echo "<ul>";
   echo "<li>Bytes: $filesize</li>";
